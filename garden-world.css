@@ -1,0 +1,105 @@
+/* Octopi Garden UI (garden-world.js). Scoped so it can sit on garden.html or inside #homeScene. */
+.gw-labels{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:4;font:14px Archivo,'Segoe UI',Arial,sans-serif;color:#194653}
+.gw-labels [hidden]{display:none!important}
+.gw-labels button{font:inherit;cursor:pointer;color:inherit;border:1px solid #ffffff80;border-bottom:3px solid #28c7b1;border-radius:16px;background:#e8fff4ef;box-shadow:inset 2px 2px 5px #fff9,0 4px 10px #225a6325}
+.gw-labels button:hover{filter:brightness(1.04)}.gw-labels button:focus-visible{outline:3px solid #efad6e;outline-offset:3px}
+.gw-world-label{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;max-width:220px;min-width:165px;text-align:center;padding:11px 15px;font-size:12px;color:#073e50;z-index:2}
+.gw-world-label small{font-size:10px;display:block;margin-top:5px;color:#567979}.gw-world-label strong{display:block}.gw-world-label em{font-size:10px;font-style:normal;display:block;margin-bottom:5px}.gw-world-label.selected{outline:3px solid #fff4c1}
+.gw-team-quote{font-size:10px;line-height:1.4;margin:8px 0;color:#527274}
+.gw-speech{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;width:150px;padding:10px;font-size:10px;line-height:1.5;text-align:left;background:#ffefd0f5;color:#123f56;border-bottom-color:#efb468;border-radius:19px 19px 19px 4px;opacity:.78;z-index:3}
+.gw-speech.speaking{opacity:1;background:#fff4d8;box-shadow:0 0 0 2px #fff4bd80,0 6px 16px #35636a25}
+.gw-node-label{position:absolute;transform:translate(12px,-50%);pointer-events:auto;max-width:165px;font-size:10px;line-height:1.35;text-align:left;padding:6px 9px;border-radius:10px;background:#e1faff;color:#06334b;border-color:#66d0da;border-bottom-width:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:10}
+
+.garden-ui{position:absolute;inset:0;pointer-events:none;z-index:9;font:14px Archivo,'Segoe UI',Arial,sans-serif;color:#194653;--gw-top:105px;--gw-left:24px;--gw-inspector-top:95px;--gw-inspector-bottom:65px;--gw-hud-bottom:50px}
+.garden-ui>*{pointer-events:auto}
+.garden-ui [hidden]{display:none!important}
+.garden-ui button,.garden-ui select,.garden-ui a{font:inherit}
+.garden-ui button{cursor:pointer;border:1px solid #ffffff80;border-bottom:4px solid #8eb5b0;border-radius:16px;padding:10px 14px;background:linear-gradient(145deg,#f6fae9,#c9e3d8);color:#28555c;box-shadow:inset 2px 2px 5px #fff9,0 4px 10px #225a6325;touch-action:manipulation;line-height:1.3}
+.garden-ui button:hover{filter:brightness(1.05)}.garden-ui button:active{transform:translateY(2px)}
+.garden-ui button:focus-visible,.garden-ui a:focus-visible,.garden-ui select:focus-visible{outline:3px solid #efad6e;outline-offset:3px}
+.garden-ui select{width:100%;padding:11px;border:1px solid #c0d2c8;border-radius:12px;background:#fffdf0;color:#24545c}
+.garden-ui h2{font-size:26px;letter-spacing:-.7px;margin:12px 0;line-height:1.06;color:#103f51}
+.garden-ui p{font-size:12px;line-height:1.65;color:#235862;margin:0 0 8px}
+.gw-eyebrow{font-size:9px;font-weight:800;letter-spacing:.14em;color:#59817e}
+
+.gw-travel{position:absolute;top:var(--gw-top);left:var(--gw-left);width:280px;max-height:calc(100% - var(--gw-top) - 20px);overflow:auto;padding:12px;border-radius:28px;background:linear-gradient(145deg,#edfff3,#bdeedc);border:1px solid #fff9;color:#134b51;box-shadow:inset 2px 3px 5px #fff9,0 15px 40px #21536320;backdrop-filter:blur(12px)}
+.gw-toggle{width:100%;display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;padding:11px 14px;background:linear-gradient(145deg,#f4f5d5,#bedfbb);border-bottom-color:#86b196;color:#194b48}
+.gw-toggle span{font-size:20px}.gw-toggle b{margin-left:auto;font-weight:700;transition:transform .2s}.gw-travel.expanded .gw-toggle b{transform:rotate(180deg)}
+.gw-travel-body{padding:14px 10px 6px}.gw-travel:not(.expanded) .gw-travel-body{display:none}
+.gw-travel h2{font-size:29px;letter-spacing:-1px}
+.gw-destinations{display:grid;gap:8px;margin:16px 0}
+.gw-destinations button{text-align:left;display:flex;align-items:center;gap:10px;background:linear-gradient(145deg,#fff9e1,#dcf2e2);color:#164852;border-bottom-color:#59a99c}
+.gw-destinations i{width:13px;height:13px;border-radius:50%;flex-shrink:0;box-shadow:inset 2px 2px 3px #fff8}
+.gw-destinations small{display:block;font-size:10px;font-weight:400;color:#266570;margin-top:4px}
+.gw-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gw-actions button{font-size:10px;padding:9px;background:#0c6172;color:#fff;border-color:#269a9f;border-bottom:3px solid #083c51}.gw-actions button:hover{background:#087e8b}
+.gw-pilot-picker{padding:12px;background:#bde9dc;border:1px solid #73b7a7;border-radius:18px;margin:14px 0}
+.gw-pilot-picker label{display:block;font-weight:700;font-size:12px;margin-bottom:7px}
+.gw-pilot-picker button{width:100%;margin-top:8px;background:#176479;color:#fff;border-color:#0b4056}
+.gw-mover{margin:14px 0;padding:10px;border:1px solid #80b9ae;border-radius:14px;color:#164454}
+.gw-mover summary{cursor:pointer;font-weight:700;font-size:12px}.gw-mover label{display:block;margin:10px 0 5px;font-size:11px}
+.gw-mover button{width:100%;margin-top:9px;background:#ffc878;color:#45320f;font-size:12px}
+.gw-travel>.gw-travel-body>small{display:block;font-size:10px;line-height:1.8;margin-top:8px;color:#4d7470}
+.gw-status{font-size:11px;font-weight:700;margin:10px 0 0;padding:8px 12px;border-radius:12px;background:#e4f1e4df;color:#1d5460}
+
+.gw-inspector{position:absolute;right:20px;top:var(--gw-inspector-top);bottom:var(--gw-inspector-bottom);width:350px;background:linear-gradient(160deg,#ecfff6,#ceeee8);color:#123d50;border:1px solid #b6fff1;border-radius:28px;padding:24px;overflow:auto;box-shadow:inset 2px 3px 6px #fff9,0 14px 40px #28596530;backdrop-filter:blur(18px);z-index:12}
+.gw-close{float:right;padding:0 8px;font-size:24px;border:0;background:transparent;box-shadow:none}
+.gw-pod-pilots{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}.gw-pod-pilots button{font-size:12px;background:#ffe3a3;color:#4d3a17}
+.gw-tabs{display:flex;gap:6px;margin:20px 0}.gw-tabs button{font-size:11px;flex:1;padding:10px 6px}
+.gw-tabs [aria-pressed=true]{background:#11677e;color:#fff;border-bottom-color:#36737c}
+.gw-bubble{padding:15px;border-radius:20px 20px 20px 5px;border:1px solid #d5d9c9;margin-bottom:13px;box-shadow:inset 2px 2px 4px #fff8}
+.gw-bubble b{font-size:12px}.gw-bubble p{margin:8px 0 0;color:#375d64}.gw-bubble small{display:block;font-size:9px;color:#6a827e;margin-top:9px}
+.gw-note{font-size:11px}
+.gw-stats{font-size:12px;font-weight:700;margin:15px 0}
+.gw-node-list{display:grid;gap:7px}.gw-node-list button{text-align:left;font-size:12px}.gw-node-list small{display:block;font-size:10px;margin-top:4px}
+.gw-node-detail{padding:14px;background:#fff9df;border-radius:15px;margin-top:14px;font-size:12px;line-height:1.7}
+.gw-node-detail button{margin-top:10px;font-size:11px}
+.gw-citation{display:block;color:#246b79;text-decoration:underline;margin-top:12px;font-weight:700}.gw-source-url{overflow-wrap:anywhere;font-size:11px}
+.gw-share{border-top:1px solid #bdcfc7;margin-top:22px;padding-top:17px}.gw-share label{font-size:11px;display:block;margin-bottom:8px}
+.gw-share button,.gw-research{width:100%;margin-top:10px;font-size:12px}
+.gw-share button{background:#ffd477;color:#553817;border-color:#edae46}.gw-research{background:#11677e;color:#fff}
+.gw-share-status{font-size:11px}
+
+.gw-pilot{position:absolute;bottom:var(--gw-hud-bottom);left:50%;transform:translateX(-50%);z-index:35;padding:14px 20px;background:#e2fff3f5;border:1px solid #8dd4c4;border-radius:24px;color:#163f50;box-shadow:0 8px 30px #00263855;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;width:min(650px,90%)}
+.gw-pilot strong{font-size:17px}.gw-pilot>span{font-size:11px}.gw-pilot button{font-size:12px}
+.gw-release{background:#176278;color:#fff}.gw-pilot button:disabled{opacity:.6;cursor:default}
+.gw-swim-pad{display:none}
+.gw-piloting .clay-grab-hint,.gw-piloting .gw-travel{display:none}
+
+/* Compact layout inside the homepage scene. */
+#homeScene .gw-labels{z-index:4}
+#homeScene .garden-ui{--gw-top:64px;--gw-left:20px;--gw-inspector-top:64px;--gw-inspector-bottom:auto;--gw-hud-bottom:24px}
+#homeScene .gw-travel{width:262px;max-height:calc(100% - var(--gw-top) - 170px)}
+#homeScene .gw-travel h2{font-size:22px}
+#homeScene .gw-inspector{width:330px;max-height:calc(100% - 160px)}
+#homeScene .gw-pilot{left:20px;transform:none;width:min(430px,60%);padding:12px 16px}
+#homeScene .gw-world-label{min-width:120px;max-width:170px;font-size:11px;padding:8px 12px}.gw-compact .gw-team-quote{display:none}.gw-compact .gw-world-label.selected .gw-team-quote{display:block}
+#homeScene .gw-speech{width:130px;font-size:9.5px}
+.reef-focus .gw-travel,.reef-focus .gw-inspector{display:none}
+
+@media(max-width:800px){
+ .garden-ui{--gw-top:auto}
+ .gw-travel{top:auto;bottom:55px;left:12px;right:12px;width:auto;padding:10px 12px;border-radius:22px;max-height:45dvh}
+ .gw-travel h2,.gw-travel-body>p,.gw-travel-body>.gw-eyebrow,.gw-travel-body>small{display:none}
+ .gw-destinations{display:flex;overflow:auto;margin:0 0 8px;gap:6px;scroll-snap-type:x mandatory}
+ .gw-destinations button{flex:0 0 150px;font-size:11px;padding:9px;min-height:48px;scroll-snap-align:start}
+ .gw-actions button,.gw-pilot-picker select,.gw-pilot-picker button,.gw-mover select,.gw-mover button,.gw-tabs button,.gw-pilot>button{min-height:44px}
+ .gw-pilot-picker{margin:6px 0;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px}.gw-pilot-picker label{grid-column:1/-1}.gw-pilot-picker select,.gw-pilot-picker button{margin:0;font-size:12px}
+ .gw-inspector{left:12px;right:12px;top:auto;bottom:max(10px,env(safe-area-inset-bottom));width:auto;height:51dvh;max-height:calc(100dvh - 90px);border-radius:25px;padding:20px;overscroll-behavior:contain;box-shadow:0 -12px 35px #001d4b70}
+ .garden-ui:has(.gw-inspector:not([hidden])) .gw-travel{display:none}
+ .gw-close{width:44px;height:44px}
+ .gw-world-label{max-width:138px;min-width:110px;padding:9px;font-size:10px}.gw-world-label em,.gw-world-label .gw-team-quote{display:none}
+ .gw-speech{max-width:125px;font-size:10px;max-height:66px;overflow:hidden}.gw-node-label{max-width:120px;font-size:10px}
+ .gw-pilot{bottom:35px;padding:12px;gap:8px;width:calc(100% - 28px);box-sizing:border-box}.gw-pilot strong{font-size:15px}.gw-pilot>span{display:none}
+ .gw-swim-pad{display:grid;grid-template-columns:repeat(3,44px);gap:5px;touch-action:none}
+ .gw-swim-pad button{min-height:44px;padding:8px;touch-action:none}.gw-swim-pad button:first-child{grid-column:2}.gw-swim-pad button:nth-child(2){grid-column:1}.gw-swim-pad .held{background:#ffc95c}
+ .gw-piloting .gw-speech{display:none}
+ /* Homepage on phones: the garden toggle and inspector hang from the top, clear of the composer below. */
+ /* The garden pill docks into the top bar beside the scene controls, leaving the water clear. */
+ #homeScene .garden-ui{--gw-top:10px}
+ #homeScene .gw-travel{top:var(--gw-top);bottom:auto;left:10px;right:auto;width:auto;max-width:calc(100% - 20px);max-height:min(60dvh,calc(100% - 20px));padding:3px 6px;border-radius:20px;z-index:26}
+ #homeScene .gw-travel .gw-toggle{font-size:11px;padding:6px 8px;gap:5px;min-height:30px}#homeScene .gw-travel .gw-toggle span{font-size:13px} #homeScene .gw-travel.expanded{right:10px;padding:10px 12px}
+ #homeScene .gw-inspector{top:56px}
+ #homeScene .gw-inspector{top:var(--gw-top);bottom:auto;left:10px;right:10px;height:auto;max-height:52dvh;padding:14px}
+ #homeScene .gw-pilot{left:14px;width:calc(100% - 28px);bottom:230px}
+}

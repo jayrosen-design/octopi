@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {clayTexture,clayAlbedo} from './clay-texture.js';
+import {clayTexture,clayAlbedo,reflectionEnvironment} from './clay-texture.js';
 
 // Deterministic microstructure keeps reloads and visual reviews comparable.
 let seed = 4817;
@@ -190,9 +190,32 @@ export function detailedProp(type, M) {
   return group;
 }
 
+// WebGPU path: the same caustic tint expressed as TSL nodes, since onBeforeCompile GLSL is ignored there.
+async function nodeCaustics(materials,time){
+  try{
+    const {Fn,uniform,positionWorld,sin,abs,float,materialColor}=await import('three/tsl');
+    const reefTime=uniform(0);time.node=reefTime;
+    const caustics=Fn(()=>{
+      const q=positionWorld.xz.mul(2.4);
+      const a=sin(q.x.add(sin(q.y.add(reefTime.mul(.32))).mul(1.8)).add(reefTime.mul(.4)));
+      const b=sin(q.y.mul(1.13).add(sin(q.x.mul(.8).sub(reefTime.mul(.23))).mul(1.6)));
+      return float(1).sub(abs(a.add(b)).mul(.65)).max(0).pow(12);
+    })();
+    const tint=float(.94).add(caustics.mul(.30));
+    for(const material of materials){if(!material.isNodeMaterial)continue;material.colorNode=materialColor.mul(tint);material.needsUpdate=true;}
+  }catch(error){console.warn('Reef caustics unavailable on this renderer.',error);}
+}
+
 export function enrichScene(scene, renderer, M, decor) {
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   M.sand.bumpMap=surfaceTexture(true); M.sand.bumpScale=.075; M.sand.roughness=.92;
+  const time={value:0,node:null};
+  const reefMaterials=[M.sand,M.sandDark,M.rock,M.rockLight,M.coralPink,M.coralMint,M.coralLilac,M.coralPeach,M.coralGreen];
+  if(renderer.isWebGPURenderer){
+    // The node renderer prefilters an equirect environment itself; PMREM from a GLSL scene is not needed.
+    scene.environment=reflectionEnvironment(); scene.environmentIntensity=.3;
+    nodeCaustics(reefMaterials,time);
+  } else {
   // A soft underwater studio environment adds legible reflections to wet surfaces.
   const env = new THREE.Scene(); env.background = new THREE.Color(0x28617a);
   const top = new THREE.Mesh(new THREE.SphereGeometry(20,24,12),new THREE.MeshBasicMaterial({color:0x91cddb,side:THREE.BackSide}));
@@ -202,11 +225,11 @@ export function enrichScene(scene, renderer, M, decor) {
   const pmrem=new THREE.PMREMGenerator(renderer), target=pmrem.fromScene(env,0);
   scene.environment=target.texture; scene.environmentIntensity=.24;
   pmrem.dispose();top.geometry.dispose();top.material.dispose();panel.geometry.dispose();panel.material.dispose();
+  }
   const rim=new THREE.DirectionalLight(0x83e5fa,2.1);rim.position.set(-5,5,-6);scene.add(rim);
   scene.fog=new THREE.FogExp2(0x23677d,.025);
   // World-space animated caustics illuminate sand and reef without a moving spotlight.
-  const time={value:0};
-  for(const material of [M.sand,M.sandDark,M.rock,M.rockLight,M.coralPink,M.coralMint,M.coralLilac,M.coralPeach,M.coralGreen]) {
+  if(!renderer.isWebGPURenderer) for(const material of reefMaterials) {
     material.onBeforeCompile=shader=>{
       shader.uniforms.reefTime=time;
       shader.vertexShader='varying vec3 reefPosition;\n'+shader.vertexShader;
@@ -248,5 +271,5 @@ export function enrichScene(scene, renderer, M, decor) {
   for(let i=0;i<300;i++)positions.push((random()-.5)*25,random()*10,(random()-.5)*20);
   motesGeometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
   const motes=new THREE.Points(motesGeometry,new THREE.PointsMaterial({color:0xc4eff3,size:.024,transparent:true,opacity:.35,depthWrite:false}));scene.add(motes);
-  return {update(t){time.value=t;motes.rotation.y=t*.007;stalks.forEach((s,i)=>{s.rotation.z=Math.sin(t*.75+i)*.075;});}};
+  return {update(t){time.value=t;if(time.node)time.node.value=t;motes.rotation.y=t*.007;stalks.forEach((s,i)=>{s.rotation.z=Math.sin(t*.75+i)*.075;});}};
 }

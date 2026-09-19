@@ -8,13 +8,13 @@
 <script type="importmap">
 {
   "imports": {
-    "three": "https://unpkg.com/three@0.184.0/build/three.module.js",
+    "three": "https://unpkg.com/three@0.184.0/build/three.webgpu.js",
+    "three/tsl": "https://unpkg.com/three@0.184.0/build/three.tsl.js",
     "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js",
     "three/addons/exporters/OBJExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js",
     "three/addons/exporters/GLTFExporter.js": "https://unpkg.com/three@0.184.0/examples/jsm/exporters/GLTFExporter.js"
   },
   "integrity": {
-    "https://unpkg.com/three@0.184.0/build/three.module.js": "sha384-8FCZ1eVO6it4+pbec2aDtnTrwjWXZLJRC+MAGCIPDgsYnUrl/E0A2YlF8ioMKI/J",
     "https://unpkg.com/three@0.184.0/build/three.core.js": "sha384-dw2ooPewaEIrAgl6oFDBmmBWCE9oW9LxRGcfwZ0hLvEprzo202wXl7vCYHRlSnOT",
     "https://unpkg.com/three@0.184.0/examples/jsm/controls/OrbitControls.js": "sha384-4rziNxOBZKQ69i+w+f89KJ55TCYquwchVbByQwmaOeIOXdOU2PLDn3kOfXHwIJC9",
     "https://unpkg.com/three@0.184.0/examples/jsm/exporters/OBJExporter.js": "sha384-nbwtoZENJD3Vq+ACK0CuGQdPMuDWHkamC2KJD70EV5nfg6jQjfppKOea07YJN+N3",
@@ -124,12 +124,15 @@
   #panel h2{margin:4px 0 6px;font-family:var(--font-heading);font-weight:800;font-size:26px;line-height:1.05}
   #panel p{margin:0 0 12px;font-size:14px;line-height:1.5;color:#1e3a55}
   #panel .x{position:absolute;right:12px;top:10px;border:0;background:transparent;cursor:pointer;font-size:20px;color:#4a6274}
+  .panel-collection{margin:10px 0 12px;padding:10px 12px;border-radius:16px;background:#e9f5f3;border:1px solid #c5e0dc}.pc-head{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#4a6274}.pc-head span:last-child{font-weight:700}.panel-collection ul{list-style:none;margin:6px 0 8px;padding:0;display:grid;gap:4px}.panel-collection li{font-size:12px;line-height:1.35;display:flex;gap:6px;align-items:baseline;color:#1f4d5c}.panel-collection li i{font:700 9px/1 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:#1f6d76;background:#fff;border-radius:8px;padding:3px 6px;flex:none}.panel-collection li a{color:inherit}.panel-collection .empty{font-size:12px;color:#4a6274;margin:6px 0 8px}.pc-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12px}.pc-actions button{border:1px solid #588f88;border-radius:14px;background:#22696d;color:#fff;font:700 11px var(--font-body);padding:7px 11px;cursor:pointer}.pc-actions button:disabled{opacity:.5;cursor:default}.pc-actions a{color:#1f6d76;font-weight:700}
   @media (max-width:720px){.composer .seg button{padding:7px 6px;font-size:11px}.mode-opt{padding:5px 8px;font-size:11px}.doc-file{margin-left:0}}
 
   :root { --font-body: 'Segoe UI', Arial, sans-serif; --font-heading: 'Segoe UI', Arial, sans-serif; }
   .scene-controls{position:fixed;right:28px;top:84px;display:flex;gap:6px;z-index:5}
   .scene-controls button{border:1px solid #b7e5e960;border-radius:20px;padding:9px 14px;background:#102f43cc;color:#e1f8ff;font:600 13px var(--font-body);backdrop-filter:blur(12px);cursor:pointer}
   .scene-controls button:hover{background:#24556b}.scene-controls button:focus-visible{outline:3px solid white;outline-offset:3px}
+  .scene-menu{position:relative}.scene-menu summary{list-style:none;cursor:pointer;border:1px solid #b7e5e960;border-radius:20px;padding:9px 14px;background:#102f43cc;color:#e1f8ff;font:600 12px var(--font-body);backdrop-filter:blur(12px);display:flex;gap:6px;align-items:center;white-space:nowrap}.scene-menu summary::-webkit-details-marker{display:none}.scene-menu summary:hover,.scene-menu[open] summary{background:#24556b}.scene-menu summary:focus-visible{outline:3px solid white;outline-offset:3px}
+  .scene-menu-body{position:absolute;right:0;top:calc(100% + 8px);display:grid;gap:6px;min-width:190px;padding:10px;border-radius:20px;background:#0d2c40f2;border:1px solid #b7e5e960;box-shadow:0 14px 34px #00142a80;backdrop-filter:blur(14px);z-index:30}.scene-menu-body button,.scene-menu-body .workshop-link{width:100%;text-align:left;box-sizing:border-box}.scene-menu-body #bubbleToggle[aria-pressed=true]::after{content:'  ✓';font-weight:800}.scene-menu-body #renderMode{background:transparent;color:#9fd3dc;font-size:11px;padding:4px 12px 0}.scene-menu-body .workshop-link{background:#dfede8}
   .reef-focus .mid,.reef-focus #pip,.reef-focus #pipShow{visibility:hidden;pointer-events:none}
   .reef-focus .mid .hit{pointer-events:none}
   .reef-focus .ui{background:linear-gradient(180deg,transparent 85%,#0f335050)}
@@ -152,14 +155,14 @@
 
   .octopi-brand{font:800 27px/1.1 var(--font-heading);letter-spacing:-1px;color:#174855;white-space:nowrap}.octopi-brand em{font-style:normal;color:#299fa7}
   .scene-controls{gap:5px;flex-wrap:wrap;max-width:calc(100vw - 36px);justify-content:flex-end}.scene-controls button,.workshop-link{font-size:12px;padding:9px 12px}.workshop-link{border-radius:30px;background:#dfede8;color:#235858;text-decoration:none;font-weight:700}
-  #research-bubbles{position:fixed;inset:0;pointer-events:none;z-index:2}.research-orb{position:absolute;transform:translate(-50%,-50%);width:148px;border:1px solid #e1ffffa6;background:linear-gradient(145deg,#e9ffffc9,#b0e4e78c);box-shadow:inset 2px 3px 9px #ffffff9c,0 9px 30px #124e6420;border-radius:45%;padding:18px 14px;backdrop-filter:blur(6px);pointer-events:auto;color:#194e61;cursor:pointer;text-align:center;transition:scale .2s}.research-orb:hover{scale:1.08;background:#e0ffffee}.research-orb strong{display:block;font-size:12px;line-height:1.35;margin:5px 0}.research-orb small{font-size:9px;display:block}.orb-kind{font-size:8px;letter-spacing:.06em;text-transform:uppercase}.orb-resume{font-size:9px;display:block;margin-top:6px;font-weight:700}.source-orb{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;background:#e7ffffdb;border:1px solid #fff;border-radius:50%;display:grid;place-items:center;pointer-events:auto;color:#24606a;text-decoration:none;font-size:9px;box-shadow:0 4px 10px #144b5720}.source-orb img{position:absolute;width:16px;height:16px;object-fit:contain}.source-orb span{font-weight:700}.embedded-reef .ui,.embedded-reef .scene-controls,.embedded-reef #pipShow,.embedded-reef #tip{display:none!important}.embedded-reef .research-orb{width:94px;padding:11px 7px;pointer-events:none}.embedded-reef .research-orb strong{font-size:9px}.embedded-reef .orb-kind,.embedded-reef .orb-resume{display:none}.embedded-reef .source-orb{width:20px;height:20px}
+  #research-bubbles{position:fixed;inset:0;pointer-events:none;z-index:2}.research-orb{position:absolute;transform:translate(-50%,-50%);width:148px;border:1px solid #e1ffffa6;background:linear-gradient(145deg,#e9ffffc9,#b0e4e78c);box-shadow:inset 2px 3px 9px #ffffff9c,0 9px 30px #124e6420;border-radius:45%;padding:18px 14px;backdrop-filter:blur(6px);pointer-events:auto;color:#194e61;cursor:pointer;text-align:center;transition:scale .2s}.research-orb:hover{scale:1.08;background:#e0ffffee}.research-orb strong{display:block;font-size:12px;line-height:1.35;margin:5px 0}.research-orb small{font-size:9px;display:block}.orb-kind{font-size:8px;letter-spacing:.06em;text-transform:uppercase}.orb-resume{font-size:9px;display:block;margin-top:6px;font-weight:700}.orb-sources{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;margin:4px 0 3px}.orb-sources:empty{display:none}.source-chip{position:relative;width:20px;height:20px;background:#fff8e6;border:1px solid #ffd27a;border-radius:50%;display:grid;place-items:center;color:#24606a;text-decoration:none;font:700 9px/1 var(--font-body);box-shadow:0 2px 6px #144b5726;overflow:hidden}.source-chip img{position:absolute;inset:2px;width:16px;height:16px;object-fit:contain;background:#fff}.source-chip:hover{scale:1.15}.research-orb.merged .orb-sources{gap:1px}.embedded-reef .ui,.embedded-reef .scene-controls,.embedded-reef #pipShow,.embedded-reef #tip{display:none!important}.embedded-reef .research-orb{width:94px;padding:11px 7px;pointer-events:none}.embedded-reef .research-orb strong{font-size:9px}.embedded-reef .orb-kind,.embedded-reef .orb-resume{display:none}.embedded-reef .source-orb{width:20px;height:20px}
   #octopiGrid{width:min(840px,94vw);max-height:90dvh;overflow:auto;border:1px solid #cae5df;border-radius:28px;padding:28px;color:#244c58;background:#edf7f4;font-family:var(--font-body);box-shadow:0 30px 100px #082e4b50}#octopiGrid::backdrop{background:#0c3440b8;backdrop-filter:blur(6px)}.grid-header{display:flex;align-items:center;justify-content:space-between}.grid-header h2{font-size:32px;margin:8px 0}.grid-header button{background:none;border:0;font-size:28px;cursor:pointer}.grid-header .eyebrow{font-size:11px;letter-spacing:.12em}.grid-header+p{font-size:14px;color:#64858a}#gridCards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}.octopus-card{background:#fff;border:1px solid #cfe1df;border-radius:20px;padding:16px 10px;cursor:pointer;color:#284f5a;text-align:center;box-shadow:0 8px 20px #18425708}.octopus-card:hover{border-color:#4f9c9a;transform:translateY(-3px)}.octopus-card img{width:100%;height:140px;object-fit:contain}.octopus-card strong,.octopus-card span,.octopus-card small{display:block}.octopus-card strong{font-size:15px;margin:10px 0 6px}.octopus-card span{font-size:11px}.octopus-card small{font-size:10px;color:#65868a;margin-top:12px}.grid-create{display:block;background:#256e77;color:white;border-radius:40px;padding:14px;text-align:center;font-weight:700;font-size:14px;text-decoration:none}
   @media(max-width:720px){.scene-controls{top:103px;left:12px;right:12px;max-width:none;justify-content:center}.scene-controls button,.workshop-link{font-size:10px;padding:7px 9px}.hero{margin-top:90px}.research-orb{width:92px;padding:12px 6px}.research-orb strong{font-size:9px}.research-orb small,.orb-kind,.orb-resume{font-size:7px}#gridCards{grid-template-columns:repeat(2,1fr)}#octopiGrid{padding:20px}.octopus-card img{height:100px}}
 
 
 .agent-speech{z-index:5;position:absolute;transform:translate(-50%,-100%);width:155px;max-height:200px;overflow:auto;background:#f5ecd8ed;border:1px solid #fff9;border-bottom:4px solid #bbba9b;border-radius:22px 22px 22px 5px;box-shadow:inset 2px 2px 5px #fff9,0 6px 16px #245c6026;color:#30545a;padding:11px;pointer-events:auto;font:11px/1.5 Arial,sans-serif}.agent-speech summary{cursor:pointer;font-weight:600}.agent-speech p{margin:8px 0 0}.group-clay-chat{z-index:6;position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:min(400px,70vw);max-height:35vh;overflow:auto;background:#e8eedceF;border:1px solid #fff9;border-bottom:4px solid #aec1ad;border-radius:22px;padding:12px 16px;pointer-events:auto;color:#31585f;font:12px/1.6 Arial,sans-serif}.group-clay-chat summary{cursor:pointer;font-weight:700}.group-clay-chat p{padding:10px;background:#ffffff80;border-radius:13px}
 </style>
-<link rel="stylesheet" href="navigation.css?v=1"><script defer src="garden-preload.js?v=2"></script><link rel="stylesheet" href="clay-interaction.css?v=pilot1"><link rel="stylesheet" href="site-navigation.css?v=1"><script defer src="site-navigation.js?v=home2"></script><link rel="stylesheet" href="unified-home.css?v=2"></head>
+<link rel="stylesheet" href="navigation.css?v=1"><script defer src="garden-preload.js?v=2"></script><link rel="stylesheet" href="clay-interaction.css?v=world2"><link rel="stylesheet" href="site-navigation.css?v=3"><script defer src="site-navigation.js?v=flow2"></script><link rel="stylesheet" href="unified-home.css?v=8"><link rel="stylesheet" href="garden-world.css?v=6"></head>
 <body><section id="homeScene" aria-label="Your living research reef">
 <canvas id="stage" aria-label="Interactive underwater reef with four research agents. Drag to orbit or use the agent buttons."></canvas>
 
@@ -178,6 +181,7 @@
   <div class="k" id="pk"></div>
   <h2 id="ph"></h2>
   <p id="pp"></p>
+  <div class="panel-collection" id="pc"><div class="pc-head"><span class="k">Own collection</span><span id="pcCount">0 items</span></div><ul id="pcList"></ul><div class="pc-actions"><button type="button" id="pcContribute">Contribute to crew bubble</button><a href="projects.html">All project files →</a></div></div>
   <button class="cta" id="pb">Use this template</button>
 </div>
     <p class="sub" id="sub">Drag to look around. Tap an octopus to meet the agent. Specialized agents plan, investigate, synthesize and review — you stay in control.</p>
@@ -228,28 +232,29 @@
   </aside>
   <div class="foot">
     <span>Built on UF NaviGator · Experimental — AI output may be inaccurate; verify claims and citations. &nbsp;·&nbsp; <b>Drag</b> orbit · <b>Right-drag</b> pan · <b>Wheel</b> zoom · <b>H</b> copy camera · <b>Shift+H</b> reset</span>
-    <span class="hint" id="fps"></span><button class="chip hit" id="mute" aria-pressed="false" style="padding:5px 11px;background:rgba(255,255,255,.9);white-space:nowrap">🔊 Sound on</button>
+    <span class="hint" id="fps"></span><button class="chip hit" id="mute" aria-pressed="false" style="white-space:nowrap">🔊 Sound on</button>
   </div>
   </div>
 </div>
 
 <div id="tip"></div>
-</section><main id="homeContent"><section id="researchWorkspace" hidden><div class="workspace-heading"><div><span>YOUR RESEARCH DESK</span><h2>One question. A whole crew.</h2></div><button id="returnToScene">Back to the ocean ↑</button></div><iframe id="researchWorkspaceFrame" title="Research plan, sources, octopus chat and report"></iframe></section><section id="meet" class="home-introduction"><span>A LITTLE WORLD OF BIG IDEAS</span><h2>Your curiosity. Their many arms.</h2><p>Meet your research crew in the reef above. Behind them, the Garden’s teams exchange ideas and grow shared knowledge bubbles. Ask a question, follow the evidence, and shape what comes next.</p><div class="home-agent-cards"></div></section><section class="home-route-cards"><article><span>01 / EXPLORE</span><h3>A living knowledge garden</h3><p>Read the conversations floating above each pod and follow the sources behind their ideas.</p><button id="visitHomeGarden">Meet the collaborating pods ↑</button></article><article><span>02 / INVESTIGATE</span><h3>Research with your crew</h3><p>Approve a plan, gather sources, compare perspectives, and build a cited report.</p><button id="focusHomeSearch">Ask your question ↑</button></article><article><span>03 / CREATE</span><h3>Mold an Agent</h3><p>Give a clay octopus its own shape, tools, name, and research purpose.</p><a href="workshop.html">Open the workshop →</a></article></section><footer>Octopi AI · Interactive research prototype · <a href="about.html">About this experience</a></footer></main><dialog id="octopiGrid"><div class="grid-header"><div><span class="eyebrow">YOUR RESEARCH CREW</span><h2>Meet your octopi.</h2></div><button id="gridClose" aria-label="Close octopi grid">×</button></div><p>Choose a specialist, or mold a new member of your crew.</p><div id="gridCards"></div><a class="grid-create" href="workshop.html">+ Mold your own octopus</a></dialog>
-<div class="scene-controls hit" aria-label="Scene controls">
-  <button id="gridShow">My octopi</button><a class="workshop-link" href="workshop.html">Mold an octopus</a><button id="bubbleToggle" aria-pressed="true">Data bubbles</button><button id="sceneFocus" aria-pressed="false">Explore reef</button>
-  <button id="sceneMotion" aria-pressed="false">Pause motion</button>
-  <button id="sceneHome">Reset view</button>
-</div>
-
+<div class="scene-tabs hit" role="tablist" aria-label="Research panels"><button type="button" role="tab" data-panel="desk" aria-selected="true">Research desk</button><button type="button" role="tab" data-panel="chat" aria-selected="false">Octopi chat</button></div>
+<aside id="researchWorkspace" class="scene-workspace hit" hidden aria-label="Research desk"><div class="workspace-heading"><div><span>YOUR RESEARCH DESK</span><h2>One question. A whole crew.</h2></div><button id="returnToScene" type="button">← Back to the ocean</button></div><iframe id="researchWorkspaceFrame" title="Research plan, sources and report" allow="autoplay"></iframe></aside>
+<aside id="sceneChat" class="scene-chat hit" hidden aria-label="Octopi chat"><div class="chat-heading"><div><span>THE OCTOPUS PANEL</span><h2>Octopi chat</h2></div><span id="sceneRound" role="status">Waiting for evidence</span></div><div id="sceneConversation" aria-live="polite"><p class="chat-empty">Your agents think out loud here as the research runs.</p></div><form id="sceneFollow" class="scene-follow"><label for="sceneFollowup">Keep the conversation going</label><div><textarea id="sceneFollowup" rows="2" maxlength="4000" placeholder="Ask the panel a follow-up…" required></textarea><button type="submit" id="sceneFollowButton">Ask ↑</button></div></form></aside>
+<div class="scene-controls hit" aria-label="Scene controls"><button id="gridShow">My octopi</button><button id="sceneFocus" aria-pressed="false">Explore reef</button><details class="scene-menu" id="sceneMenu"><summary aria-label="Scene options"><span aria-hidden="true">⚙</span> Scene</summary><div class="scene-menu-body"><button id="bubbleToggle" aria-pressed="true">Data bubbles</button><button id="sceneMotion" aria-pressed="false">Pause motion</button><button id="sceneHome">Reset view</button><a class="workshop-link" href="workshop.html">Mold an octopus</a><span class="workshop-link" id="renderMode" role="status">Starting renderer…</span></div></details></div>
+</section><main id="homeContent"><section id="meet" class="home-introduction"><span>A LITTLE WORLD OF BIG IDEAS</span><h2>Your curiosity. Their many arms.</h2><p>Meet your research crew in the reef above. Behind them, the Garden’s teams exchange ideas and grow shared knowledge bubbles. Ask a question, follow the evidence, and shape what comes next.</p><div class="home-agent-cards"></div></section><section class="home-route-cards"><article><span>01 / EXPLORE</span><h3>A living knowledge garden</h3><p>Read the conversations floating above each pod and follow the sources behind their ideas.</p><button id="visitHomeGarden">Meet the collaborating pods ↑</button></article><article><span>02 / INVESTIGATE</span><h3>Research with your crew</h3><p>Approve a plan, gather sources, compare perspectives, and build a cited report.</p><button id="focusHomeSearch">Ask your question ↑</button></article><article><span>03 / CREATE</span><h3>Mold an Agent</h3><p>Give a clay octopus its own shape, tools, name, and research purpose.</p><a href="workshop.html">Open the workshop →</a></article></section><footer>Octopi AI · Interactive research prototype · <a href="about.html">About this experience</a></footer></main><dialog id="octopiGrid"><div class="grid-header"><div><span class="eyebrow">YOUR RESEARCH CREW</span><h2>Meet your octopi.</h2></div><button id="gridClose" aria-label="Close octopi grid">×</button></div><p>Choose a specialist, or mold a new member of your crew.</p><div id="gridCards"></div><a class="grid-create" href="workshop.html">+ Mold your own octopus</a></dialog>
 <button id="pipShow" class="chip hit" style="position:fixed;left:28px;bottom:58px;display:none;background:rgba(255,255,255,.92)">▶ Product tour</button>
 
 
 <script type="module">
 import * as THREE from 'three';
-import {clayGrab} from './clay-grab.js?v=attached3';
+import {clayGrab} from './clay-grab.js?v=attached4';
+import {clayOcean} from './clay-ocean.js';
 import {makeClayAgent,loadAgents} from './clay-agent.js?swim=2';
-import {homeGarden} from './home-garden.js?v=face2';
-import {researchReef} from './research-reef.js?v=home2';
+import {gardenWorld as mountGarden,HOME_POSITIONS} from './garden-world.js?v=3';
+import {agentItems,recordEvidence,contributeToPod,TYPE_LABEL} from './agent-collections.js';
+import {navigatorVoice} from './navigator-voice.js';
+import {researchReef} from './research-reef.js?v=chips1';
 import {mountMusic,setMusicScene} from './music.js?v=claypods1';
 const embedded=new URLSearchParams(location.search).has('embedded');
 if(embedded) document.body.classList.add('embedded-reef');
@@ -274,7 +279,10 @@ const AGENTS = [
 
 // ---------- renderer / scene ----------
 const canvas = document.getElementById('stage');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+// WebGPU with an automatic WebGL 2 fallback: the reef and the Garden now share one node-based renderer.
+const renderer = new THREE.WebGPURenderer({ canvas, antialias: true, alpha: false });
+await renderer.init();
+{ const badge = document.getElementById('renderMode'); if (badge) badge.textContent = renderer.backend.isWebGPUBackend ? 'WebGPU reef' : 'WebGL 2 reef'; }
 renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 720 ? 1.25 : 1.75));
 renderer.setClearColor(0x2a7f9a);
 renderer.shadowMap.enabled = true;
@@ -285,8 +293,8 @@ renderer.toneMappingExposure = 1.05;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x2a7f9a);
 scene.fog = new THREE.Fog(0x2a7f9a, 12, 30);
-// vertical water gradient behind everything
-{ const c = document.createElement('canvas'); c.width = 4; c.height = 256; const x = c.getContext('2d'); const gr = x.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, '#9fdbe6'); gr.addColorStop(0.45, '#3d98ad'); gr.addColorStop(1, '#134f6b'); x.fillStyle = gr; x.fillRect(0, 0, 4, 256); const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; scene.background = tex; }
+// vertical water gradient behind the embedded reef; the full page uses the Garden's dark trench instead
+if (embedded) { const c = document.createElement('canvas'); c.width = 4; c.height = 256; const x = c.getContext('2d'); const gr = x.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, '#9fdbe6'); gr.addColorStop(0.45, '#3d98ad'); gr.addColorStop(1, '#134f6b'); x.fillStyle = gr; x.fillRect(0, 0, 4, 256); const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; scene.background = tex; }
 
 const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
 camera.position.set(0, 6.6, 19);
@@ -295,7 +303,7 @@ const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true; controls.dampingFactor = 0.06;
 controls.enablePan = true; controls.enableZoom = true; controls.screenSpacePanning = true; controls.panSpeed = 1.2; controls.zoomSpeed = 0.8;
 controls.mouseButtons = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
-controls.minDistance = 6; controls.maxDistance = 22;
+controls.minDistance = 6; controls.maxDistance = embedded ? 22 : 32;
 canvas.addEventListener('contextmenu', e => e.preventDefault());
 const HOME = { pos: camera.position.clone(), target: new THREE.Vector3(0, 1.1, -2.5) };
 // H = print the current camera so it can be hard-coded as the new default; Shift+H = reset to home
@@ -325,7 +333,9 @@ const caustic = new THREE.SpotLight(0xdff7ff, 40, 30, 0.6, 0.8, 1.2);
 caustic.position.set(-3, 10, 2); scene.add(caustic);
 
 // ---------- materials (clay) ----------
-const clay = (hex, extra = {}) => new THREE.MeshStandardMaterial({ color: hex, roughness: 0.78, metalness: 0, flatShading: false, ...extra });
+// Node materials let the WebGPU path add TSL caustics; classic materials are used if nodes are unavailable.
+const ClayMaterial = THREE.MeshStandardNodeMaterial || THREE.MeshStandardMaterial;
+const clay = (hex, extra = {}) => new ClayMaterial({ color: hex, roughness: 0.78, metalness: 0, flatShading: false, ...extra });
 const M = {
   sand: clay(0xf3ead6), sandDark: clay(0xd9ccb0), rock: clay(0x8fc7d6), rockLight: clay(0xbfe3ec),
   coralPink: clay(0xf3a9b8), coralMint: clay(0x9fd9c9), coralLilac: clay(0xc7b6e6), coralPeach: clay(0xf7c9a0), coralGreen: clay(0xa9d68a),
@@ -424,12 +434,27 @@ if (octos.length > 1) {
   hx /= octos.length; hz /= octos.length;
   for (const o of octos) o.rotation.y = Math.atan2(hx - o.position.x, hz - o.position.z);
 }
-const clayInteraction=clayGrab({scene,camera,controls,canvas,objects:[...octos,...decor.children,...octos.flatMap(a=>a.userData.tentacles.map(arm=>arm.userData.heldTool).filter(Boolean))],bounds:7,floor:0,onTap:o=>{if(o.userData.agent)select(o.userData.agent);}});
+// The full Octopi Garden (four team pods, knowledge bubbles and their collaborators) grows behind the reef.
+const voice=!embedded?navigatorVoice({after:document.getElementById('mute')}):null;
+// The front crew starts with a knowledge bubble of its own: the plan, the evidence pool, the review notes
+// and any research you have saved on this device.
+const CREW={id:'crew',name:'Your Research Crew',mode:'RESEARCHING',color:'#5aa9e6',x:0,z:-1.2,decor:false,graphY:5.05,shellRadius:1.4,keepsSavedResearch:true,members:octos.slice(0,4),
+  topic:'How should a research crew plan, gather, synthesize and review evidence together?',
+  brief:'Your four agents keep one shared bubble: the approved plan, the evidence they gather, the cited synthesis and the review notes. Saved research on this device is retained here too.',
+  ideas:['Approved research plan','Evidence pool','Cited synthesis','Review & follow-ups'],
+  sourceNote:'The plan you approve before anything searches: objective, temporal scope, queries, target sources and report structure.',
+  reference:{title:'Deep Research: plan, gather, synthesize, review',publisher:'Octopi AI',url:location.origin+location.pathname.replace(/[^/]*$/,'')+'about.html',sourceType:'Project documentation',note:'How this crew works: an approved plan, a bounded evidence loop, a synthesis written only from gathered sources, and a review that strips unverified citations.'},
+  talk:[['Strategist · Agent · plans','I turn your question into an explicit plan: objective, scope, queries and report structure. Nothing searches until you approve it.'],['Investigator · Agent · gathers evidence','I think, search, read and evaluate inside a step budget. Everything I keep goes into our shared evidence pool with its source attached.'],['Synthesizer · Agent · writes','I write only from the approved plan and the gathered sources, under the plan’s exact headers, so every claim can be traced.'],['Reviewer · Agent · validates','I check each citation against the evidence pool, strip what was never gathered, and propose three follow-up questions.']]};
+const gardenWorld=!embedded?mountGarden({scene,camera,controls,canvas,host:document.getElementById('homeScene'),voice,positions:HOME_POSITIONS,compact:true,collapsed:true,teams:[CREW],onResearch:()=>openHomeResearch('research')}):null;
+const clayInteraction=clayGrab({scene,camera,controls,canvas,objects:[...octos,...decor.children,...octos.flatMap(a=>a.userData.tentacles.map(arm=>arm.userData.heldTool).filter(Boolean)),...(gardenWorld?.grabObjects||[])],bounds:gardenWorld?16:7,floor:0,
+  onTap:o=>{if(gardenWorld?.onTap(o))return;if(o.userData.agent)select(o.userData.agent);},onDrop:o=>gardenWorld?.onDrop(o),onPickup:()=>gardenWorld?.onPickup(),status:text=>gardenWorld?.report(text)});
+gardenWorld?.setGrab(clayInteraction);
 const dataReef=researchReef(scene,camera,octos,embedded);
 const reef = enrichScene(scene, renderer, M, decor);
-scene.fog=new THREE.Fog(0x23677d,22,60);
-const gardenWorld=!embedded?homeGarden(scene,camera,canvas,document.getElementById('homeScene')):null;
-
+// The Garden's deep-blue trench, walls and drifting glows surround the combined reef + garden scene.
+const ocean = !embedded ? clayOcean(scene) : null;
+if (ocean) { renderer.setClearColor(0x031c36); scene.fog = new THREE.FogExp2(0x08304b, .012); scene.environmentIntensity = .22; }
+else scene.fog=new THREE.Fog(0x23677d,22,60);
 // ---------- bubbles ----------
 const bubbleGeo = new THREE.SphereGeometry(0.06, 16, 12);
 const bubbleMat = new THREE.MeshPhysicalMaterial({ color: 0xc7efff, transparent: true, opacity: 0.25, roughness: 0.06, metalness: .15, clearcoat: 1, depthWrite: false });
@@ -505,11 +530,25 @@ function select(a) {
   document.getElementById('pk').textContent = a.role;
   document.getElementById('ph').textContent = a.name;
   document.getElementById('pp').textContent = a.desc;
+  renderPanelCollection(a);
   panel.classList.add('show');
   const o = octos.find(x => x.userData.agent === a) || octos[0];
   controls.target.lerp(new THREE.Vector3(o.position.x * 0.25, 0.6, -0.5 + o.position.z * 0.2), 1);
   syncChips();
 }
+// Each agent's own data collection, with a one-tap contribution into the crew's shared bubble.
+function renderPanelCollection(a) {
+  const items = agentItems(a.id), list = document.getElementById('pcList'), button = document.getElementById('pcContribute');
+  document.getElementById('pcCount').textContent = items.length + (items.length === 1 ? ' item' : ' items');
+  list.replaceChildren();
+  document.querySelector('#pc .empty')?.remove();
+  if (!items.length) { const p = document.createElement('p'); p.className = 'empty'; p.textContent = a.id === 'investigator' ? 'Sources this agent gathers will be kept here.' : a.id === 'strategist' ? 'Approved plans are kept here.' : a.id === 'synthesizer' ? 'Finished reports are kept here.' : a.id === 'reviewer' ? 'Citation checks are kept here.' : 'Notes this agent collects will be kept here.'; list.after(p); }
+  for (const item of items.slice(0, 3)) { const li = document.createElement('li'), tag = document.createElement('i'); tag.textContent = TYPE_LABEL[item.type] || 'Note'; li.append(tag); if (item.url) { const link = document.createElement('a'); link.href = item.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = item.title; li.append(link); } else li.append(item.title); list.append(li); }
+  const pending = items.filter(i => !i.contributed?.includes('crew'));
+  button.disabled = !pending.length; button.textContent = pending.length ? `Contribute ${pending.length} to crew bubble` : items.length ? 'All shared with the crew bubble' : 'Contribute to crew bubble';
+  button.onclick = () => { const added = contributeToPod(a.id, 'crew', pending.map(i => i.id)); gardenWorld?.report(added ? a.name + ' added ' + added + ' notes to the crew bubble' : 'Nothing new to add'); renderPanelCollection(a); };
+}
+addEventListener('collections-updated', () => { if (selected && panel.classList.contains('show')) renderPanelCollection(selected); });
 const chipsEl = document.getElementById('chips');
 function buildChips(list) {
   chipsEl.innerHTML = '';
@@ -615,7 +654,20 @@ showStep(0); document.getElementById('tourPause').textContent = '▶'; document.
 
 // ---------- resize / loop ----------
 let lastW = 0, lastH = 0;
-function resize() { const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight; if (!w || !h || (w === lastW && h === lastH)) return; lastW = w; lastH = h; renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = Math.min(85, w / h < 1.5 ? 34 * (1.5 / (w / h)) : 34); camera.updateProjectionMatrix(); }
+function resize() { const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight; if (!w || !h || (w === lastW && h === lastH)) return; lastW = w; lastH = h; renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = Math.min(70, w / h < 1.5 ? 34 * (1.5 / (w / h)) : 34); frameBetweenPanels(); camera.updateProjectionMatrix(); }
+// Aim the picture at the open water: between the docked desk and chat on wide screens, and above the
+// composer on portrait phones, where the crew would otherwise sit under the form.
+function frameBetweenPanels() {
+  const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight;
+  let x = 0, y = 0;
+  if (document.body.classList.contains('workspace-open') && w > 700) {
+    const desk = document.getElementById('researchWorkspace').getBoundingClientRect(), chat = document.getElementById('sceneChat').getBoundingClientRect(), frame = canvas.getBoundingClientRect();
+    x = Math.round(w / 2 - (((desk.right + chat.left) / 2) - frame.left));
+  }
+  if (w / h < 1 && !embedded) y = Math.round(h * (document.body.classList.contains('workspace-open') ? .22 : .1));
+  if (!x && !y) { if (camera.view) camera.clearViewOffset(); return; }
+  camera.setViewOffset(w, h, x, y, w, h);
+}
 addEventListener('resize', resize); new ResizeObserver(resize).observe(canvas); resize();
 
 const tmp = new THREE.Vector3();
@@ -628,7 +680,7 @@ function tick(now = performance.now()) {
   const bendArms = t - lastArmTime >= 1 / 30 || lastArmTime < 0;
   if (bendArms) lastArmTime = t;
   resize();
-  gardenWorld?.update(t);
+  gardenWorld?.update(t, dt);
   controls.update();
   // picking
   if (pointer.moved) {
@@ -641,7 +693,7 @@ function tick(now = performance.now()) {
   }
 
   octos.forEach((o, i) => {
-    if(o.userData.clayMoving)return;
+    if(o.userData.clayMoving||o.userData.possessed)return;
     // Each agent has an independent current; inspecting one leaves the others swimming.
     const gatherOn = hovered === o || selected === o.userData.agent || !!o.userData.spot;
     const s0 = o.userData.seed;
@@ -666,7 +718,8 @@ function tick(now = performance.now()) {
       tx = THREE.MathUtils.clamp(tx, -5.3, 5.3);
       tz = THREE.MathUtils.clamp(tz, -2.7, 1.5);
     }
-    o.position.x += (tx - o.position.x) * (1 - Math.exp(-3.08 * dt)) * Math.min(1, step); o.position.z += (tz - o.position.z) * (1 - Math.exp(-3.08 * dt)) * Math.min(1, step);
+    const vx = (tx - o.position.x) * (1 - Math.exp(-3.08 * dt)) * Math.min(1, step), vz = (tz - o.position.z) * (1 - Math.exp(-3.08 * dt)) * Math.min(1, step);
+    o.position.x += vx; o.position.z += vz;
     let mateX = 0, mateZ = 0, mates = 0;
     for (const other of octos) { if (other === o) continue; mateX += other.position.x; mateZ += other.position.z; mates++; }
     const faceGroup = mates ? Math.atan2(mateX / mates - o.position.x, mateZ / mates - o.position.z) : 0;
@@ -694,7 +747,7 @@ function tick(now = performance.now()) {
   decor.traverse(m => { if (m.userData.sway !== undefined) m.rotation.z = -Math.cos(m.userData.sway) * 0.6 + Math.sin(t * 1.4 + m.userData.sway * 3) * 0.12; });
   for (const b of bubbles) { b.position.y += b.userData.v * dt * Math.min(1, step); b.position.x += Math.sin(t * 2 + b.position.y) * 0.12 * dt * Math.min(1, step); if (b.position.y > 8.5) { b.position.y = -0.2; b.position.x = (Math.random() - 0.5) * 18; } }
   caustic.position.x = Math.sin(t * 0.3) * 3; caustic.position.z = Math.cos(t * 0.23) * 2 + 1;
-  dataReef.update(t);
+  dataReef.update(t); ocean?.update(t);
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
 }
@@ -708,28 +761,56 @@ document.querySelectorAll('#seg button,#chips,#q,#expertSize,#docMethods,#docFil
 const motionButton = document.getElementById('sceneMotion');
 function syncMotion() { motionButton.textContent = motionPaused ? 'Resume motion' : 'Pause motion'; motionButton.setAttribute('aria-pressed', String(motionPaused)); }
 motionButton.onclick = () => { motionPaused = !motionPaused; syncMotion(); }; syncMotion();
-document.getElementById('sceneHome').onclick = () => { camera.position.copy(HOME.pos); controls.target.copy(HOME.target); controls.update(); };
+document.getElementById('sceneHome').onclick = () => { gardenWorld?.releasePilot(); camera.position.copy(HOME.pos); controls.target.copy(HOME.target); controls.update(); };
 addEventListener('keydown', e => { if(e.key === 'Escape') { document.body.classList.remove('reef-focus'); const b=document.getElementById('sceneFocus'); b.textContent='Explore reef';b.setAttribute('aria-pressed','false'); panel.classList.remove('show');selected=null;syncChips(); } });
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();toast('The 3D view was interrupted. Reload to restore the reef.');});
+// One compact scene menu instead of a row of buttons; it closes on outside click, Escape, or after a choice.
+// On phones the Explore-reef toggle folds into the Scene menu; on wider screens it stands beside it.
+{ const menu = document.getElementById('sceneMenu'), focusButton = document.getElementById('sceneFocus'), body = menu.querySelector('.scene-menu-body'), phone = matchMedia('(max-width:700px)'); const place = () => { if (phone.matches) body.prepend(focusButton); else menu.before(focusButton); }; place(); phone.addEventListener('change', place); }
+{ const menu = document.getElementById('sceneMenu'); document.addEventListener('pointerdown', e => { if (!menu.contains(e.target)) menu.open = false; }); menu.querySelectorAll('button').forEach(b => b.addEventListener('click', () => setTimeout(() => { menu.open = false; }, 120))); addEventListener('keydown', e => { if (e.key === 'Escape') menu.open = false; }); }
 document.getElementById('bubbleToggle').onclick=e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',String(on));dataReef.setVisible(on);};
 const grid=document.getElementById('octopiGrid');
 document.getElementById('gridShow').onclick=()=>grid.showModal();document.getElementById('gridClose').onclick=()=>grid.close();
 const portraits=['strategist-agent.png','searcher-agent.png','writer-agent.png','researcher-agent.png'];
 [...AGENTS,...customAgents].forEach((a,i)=>{const card=document.createElement('button');card.className='octopus-card';const img=document.createElement('img');img.src='src/assets/personas/'+portraits[i%4];img.alt='';const name=document.createElement('strong');name.textContent=a.name;const role=document.createElement('span');role.textContent=a.role;const note=document.createElement('small');note.textContent=i<4?'Meet this agent':'Your custom clay agent';card.append(img,name,role,note);card.onclick=()=>{grid.close();select(a);};document.getElementById('gridCards').append(card);});
-addEventListener('message',e=>{if(e.origin!==location.origin||!(embedded?e.source===parent:e.source===document.getElementById('researchWorkspaceFrame').contentWindow))return;const m=e.data;if(m?.type==='octopi-evidence')dataReef.feed(m);if(m?.type==='octopi-music'&&['reef','search'].includes(m.scene))setMusicScene(m.scene);});
+addEventListener('message',e=>{if(e.origin!==location.origin||!(embedded?e.source===parent:e.source===document.getElementById('researchWorkspaceFrame').contentWindow))return;const m=e.data;if(m?.type==='octopi-evidence'){if(['chat','reset','sources','merge'].includes(m.action))dataReef.feed(m);if(!embedded){sceneChat(m);recordEvidence(m,{research:m.session,title:m.question});}}if(m?.type==='octopi-music'&&['reef','search'].includes(m.scene))setMusicScene(m.scene);});
+// The octopi chat docked beside the ocean mirrors the panel's conversation, message by message.
+function sceneChat(m){
+ const list=document.getElementById('sceneConversation'),round=document.getElementById('sceneRound'),button=document.getElementById('sceneFollowButton');if(!list)return;
+ if(m.action==='reset'){list.replaceChildren();return;}
+ if(m.action==='status'){round.textContent=m.text;return;}
+ if(m.action==='busy'){button.disabled=!!m.busy;return;}
+ if(m.action==='round'){const h=document.createElement('p');h.className='chat-round';h.textContent=m.text;list.append(h);}
+ if(m.action!=='chat')return;
+ list.querySelector('.chat-empty')?.remove();
+ const row=document.createElement('article');row.className='chat-message';const img=document.createElement('img');img.src='src/assets/personas/'+(m.image||portraits[m.agent%4]);img.alt='';const box=document.createElement('div');const name=document.createElement('b');name.textContent=m.name;const tag=document.createElement('small');tag.textContent=(m.demo?'Demo · ':'')+'Round '+m.round;const text=document.createElement('p');text.textContent=m.text;box.append(tag,name,text);row.append(img,box);
+  const following=list.scrollHeight-list.scrollTop-list.clientHeight<90;list.append(row);if(following)list.scrollTop=list.scrollHeight;
+  if(homeSceneEl.dataset.panel!=='chat')document.querySelector('.scene-tabs [data-panel=chat]').dataset.unread='yes';
+}
 if(embedded){camera.position.set(0,4.3,19);controls.target.set(0,1.4,0);}
 const arrivedAgent=customAgents.find(a=>a.id===new URLSearchParams(location.search).get('agent'));if(arrivedAgent&&!embedded)select(arrivedAgent);
 if(sessionStorage.getItem('octopi-show-grid')==='yes'&&!embedded){sessionStorage.removeItem('octopi-show-grid');grid.showModal();}
 tick();
 
+// The research desk opens as in-game overlay UI over the ocean: the form on the left, the octopi chat on the right.
 function openHomeResearch(mode='research'){
- const section=document.getElementById('researchWorkspace'),frame=document.getElementById('researchWorkspaceFrame');section.hidden=false;frame.src='panel.html?embedded=1&unified=1&mode='+mode;section.scrollIntoView({behavior:'smooth'});
+ const desk=document.getElementById('researchWorkspace'),chat=document.getElementById('sceneChat'),frame=document.getElementById('researchWorkspaceFrame');
+ const src='panel.html?embedded=1&unified=1&overlay=1&mode='+mode;
+ if(frame.dataset.mode!==mode){frame.dataset.mode=mode;frame.src=src;document.getElementById('sceneConversation').replaceChildren();document.getElementById('sceneRound').textContent='Waiting for evidence';}
+ desk.hidden=chat.hidden=false;document.body.classList.add('workspace-open');gardenWorld?.releasePilot();gardenWorld?.expand(false);frameBetweenPanels();camera.updateProjectionMatrix();
+ document.getElementById('homeScene').scrollIntoView({behavior:'smooth'});
 }
+// On phones only one panel shows at a time; the tabs swap between the desk and the chat.
+const homeSceneEl=document.getElementById('homeScene');homeSceneEl.dataset.panel='desk';
+function showScenePanel(name){homeSceneEl.dataset.panel=name;for(const b of document.querySelectorAll('.scene-tabs button')){const on=b.dataset.panel===name;b.setAttribute('aria-selected',on);if(on)delete b.dataset.unread;}}
+for(const b of document.querySelectorAll('.scene-tabs button'))b.onclick=()=>showScenePanel(b.dataset.panel);
+function closeHomeResearch(){document.getElementById('researchWorkspace').hidden=document.getElementById('sceneChat').hidden=true;document.body.classList.remove('workspace-open');frameBetweenPanels();camera.updateProjectionMatrix();}
 if(!embedded){
  addEventListener('octopi-resume',e=>openHomeResearch(e.detail.mode));
- document.getElementById('returnToScene').onclick=()=>document.getElementById('homeScene').scrollIntoView({behavior:'smooth'});
+ document.getElementById('returnToScene').onclick=closeHomeResearch;
+ document.getElementById('sceneFollow').onsubmit=e=>{e.preventDefault();const box=document.getElementById('sceneFollowup'),text=box.value.trim();if(!text)return;box.value='';document.getElementById('researchWorkspaceFrame').contentWindow?.postMessage({type:'octopi-followup',text},location.origin);};
  document.getElementById('focusHomeSearch').onclick=()=>{document.getElementById('homeScene').scrollIntoView({behavior:'smooth'});q.focus({preventScroll:true});};
- document.getElementById('visitHomeGarden').onclick=()=>{document.getElementById('homeScene').scrollIntoView({behavior:'smooth'});camera.position.set(0,8,21);controls.target.set(0,2,-8);controls.update();gardenWorld.show();};
+ document.getElementById('visitHomeGarden').onclick=()=>{document.getElementById('homeScene').scrollIntoView({behavior:'smooth'});gardenWorld.overview();gardenWorld.expand(true);};
  AGENTS.forEach((a,i)=>{const card=document.createElement('article'),img=document.createElement('img'),h=document.createElement('h3'),desc=document.createElement('p'),button=document.createElement('button');img.src='src/assets/personas/'+portraits[i];img.alt=a.name+' octopus';h.textContent=a.name;desc.textContent=a.role.replace('Agent · ','');button.textContent='Meet '+a.name;button.onclick=()=>{document.getElementById('homeScene').scrollIntoView({behavior:'smooth'});select(a);};card.append(img,h,desc,button);document.querySelector('.home-agent-cards').append(card);});
  if(new URLSearchParams(location.search).has('workspace'))openHomeResearch(new URLSearchParams(location.search).get('workspace'));
 }

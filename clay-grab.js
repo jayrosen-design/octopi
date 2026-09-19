@@ -5,6 +5,8 @@ import * as THREE from 'three';
 export function clayGrab({scene,camera,controls,canvas,objects,onDrop=()=>{},onPickup=()=>{},onTap=()=>{},status=()=>{},bounds=35,floor=0}){
  const roots=new Set(objects),bodies=new Map(),ray=new THREE.Raycaster(),ndc=new THREE.Vector2(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),0),point=new THREE.Vector3();let pending=null,held=null,lastDrop=0,enabled=true;const recovery=[];const contacts=clayContacts(objects.filter(o=>!o.userData.toolType));
  const badge=document.createElement('div');badge.className='clay-grab-hint';badge.textContent='Click a tool to animate · drag clay to move · drag water to orbit';canvas.parentElement.append(badge);canvas.style.touchAction='none';
+ // The hint introduces the controls, then gets out of the way: it fades after a short while or once the visitor starts interacting.
+ const fadeHint=()=>badge.classList.add('fade');let hintTimer=setTimeout(fadeHint,9000);canvas.addEventListener('pointerdown',()=>{clearTimeout(hintTimer);hintTimer=setTimeout(fadeHint,1500);},{once:true});
  function aim(e){const r=canvas.getBoundingClientRect();ndc.set((e.clientX-r.left)/r.width*2-1,1-(e.clientY-r.top)/r.height*2);ray.setFromCamera(ndc,camera);}
  function rootOf(o){while(o&&!roots.has(o))o=o.parent;return o;}
  canvas.addEventListener('pointerdown',e=>{if(!enabled||e.button!==0||held||pending)return;aim(e);const hit=ray.intersectObjects([...roots],true).find(h=>!h.object.isInstancedMesh);if(!hit)return;const root=rootOf(hit.object);if(!root)return;
