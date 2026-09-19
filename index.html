@@ -248,7 +248,7 @@
 import * as THREE from 'three';
 import {clayGrab} from './clay-grab.js?v=attached3';
 import {makeClayAgent,loadAgents} from './clay-agent.js?swim=2';
-import {homeGarden} from './home-garden.js?v=face1';
+import {homeGarden} from './home-garden.js?v=face2';
 import {researchReef} from './research-reef.js?v=home2';
 import {mountMusic,setMusicScene} from './music.js?v=claypods1';
 const embedded=new URLSearchParams(location.search).has('embedded');
@@ -667,13 +667,12 @@ function tick(now = performance.now()) {
       tz = THREE.MathUtils.clamp(tz, -2.7, 1.5);
     }
     o.position.x += (tx - o.position.x) * (1 - Math.exp(-3.08 * dt)) * Math.min(1, step); o.position.z += (tz - o.position.z) * (1 - Math.exp(-3.08 * dt)) * Math.min(1, step);
-    const vx = tx - o.position.x, vz = tz - o.position.z;
     let mateX = 0, mateZ = 0, mates = 0;
     for (const other of octos) { if (other === o) continue; mateX += other.position.x; mateZ += other.position.z; mates++; }
     const faceGroup = mates ? Math.atan2(mateX / mates - o.position.x, mateZ / mates - o.position.z) : 0;
-    const glance = Math.sin(t * .48 + s0) * .24 + Math.sin(t * 1.05 + s0 * 1.6) * .1;
+    const glance = Math.sin(t * .48 + s0) * .28 + Math.sin(t * 1.05 + s0 * 1.6) * .12;
     const faceViewer = Math.atan2(-o.position.x, 2.5 - o.position.z);
-    const want = gk > .5 ? faceViewer : faceGroup + glance;
+    const want = (gatherOn ? faceGroup * .7 + faceViewer * .3 : faceGroup) + glance;
     let d = want - o.rotation.y; d = Math.atan2(Math.sin(d), Math.cos(d)); o.rotation.y += d * (1 - Math.exp(-4.2 * dt)) * Math.min(1, step);
     const target = (hovered === o || (selected && selected === o.userData.agent) || o.userData.spot) ? 1 : 0;
     o.userData.hover += (target - o.userData.hover) * (1 - Math.exp(-7.67 * dt));
