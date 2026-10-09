@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Pods · OctoPi AI × Jay Rosen Studios</title>
+<link rel="stylesheet" href="site-navigation.css?v=3">
+<link rel="stylesheet" href="studios.css">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.184.0/build/three.webgpu.js"}}</script>
+<script defer src="site-navigation.js?v=studios1"></script>
+<script type="module" src="studios.js"></script>
+</head><body>
+<header class="studio-header"><a href="index.html">OctoPi AI</a><span>Jay Rosen Studios / Studio Team Framework</span></header>
+<main class="studio-shell">
+ <section class="studio-intro">
+   <div class="eyebrow">THE CREATIVE AGENT REEF · EXPERIMENTAL FRAMEWORK</div>
+   <h1>Seven pods. Thirty-five clay agents.</h1>
+   <p>Jay directs creative technology and vision. Jessica oversees operations, bookkeeping and arts education. Each studio has a director and four specialists. Humans approve commitments, finances, publishing, legal decisions and client communications.</p>
+ </section>
+ <nav id="studioTabs" class="studio-tabs" aria-label="Choose a studio pod"></nav>
+ <div class="studio-workspace">
+  <section class="studio-stage">
+    <div class="stage-heading"><div><span id="studioNumber">00</span> <h2 id="studioName">Shared Operations</h2><p id="studioMission"></p></div><span class="status-chip" id="renderStatus">Loading clay models</span></div>
+    <div class="clay-view"><canvas id="clayStage" aria-label="Three-dimensional view of the selected clay octopus team"></canvas><div class="clay-hint">Select an octopus or use the agent cards to view its role.</div></div>
+    <div id="agentCards" class="agent-cards" aria-label="Studio team roles"></div>
+  </section>
+  <aside class="studio-desk">
+    <div class="eyebrow">ACTIVE AGENT</div>
+    <h2 id="agentName">Executive Orchestrator</h2>
+    <p id="agentBrief"></p>
+    <div class="agent-props"><span id="agentFocus"></span><span id="agentTool"></span></div>
+    <div class="eyebrow spaced">TEAM DELIVERABLES</div><ul id="studioOutputs"></ul>
+    <form id="missionForm">
+      <label for="missionText">Approved mission / brief</label>
+      <textarea id="missionText" maxlength="3000" rows="5" placeholder="Describe a project, client request, launch, commission, or decision."></textarea>
+      <label for="modelId">NaviGator model ID (live runs)</label>
+      <input id="modelId" placeholder="Select a model through the research desk, or type its ID" autocomplete="off">
+      <div class="button-row">
+        <button type="submit" id="runMission" class="primary">Run team mission</button>
+        <button type="button" id="stopMission" hidden>Stop</button>
+      </div>
+      <div class="button-row">
+        <button type="button" id="openResearch">Research with existing OctoPi crew</button>
+        <button type="button" id="exportMission" disabled>Export report</button>
+      </div>
+    </form>
+    <p class="fine-print">Live runs require the included local server and NaviGator credentials. Each team mission makes up to six LLM calls. No web searches, code execution, or external business actions occur here. The existing research reef provides sourced web research.</p>
+    <p role="status" id="studioStatus" class="run-status">Select a studio and enter a mission.</p>
+    <div id="runResults" class="run-results" aria-live="polite"></div>
+    <div class="history-row"><h3>Saved missions</h3><button id="clearSelection" type="button">New mission</button></div>
+    <div id="missionHistory" class="mission-history"></div>
+  </aside>
+ </div>
+ <footer>Prototype framework — role assignments are proposed, not deployed autonomous employees. Review generated information and verify all external claims before use. <a href="STUDIOS.md">Architecture & setup</a></footer>
+</main>
+</body></html>
