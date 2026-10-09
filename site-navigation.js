@@ -4,7 +4,7 @@
  const current=location.pathname.split('/').pop()||'index.html';
  // First visit: the intro explains the reef before anyone lands in it. Guests can skip straight through.
  try{if(current==='index.html'&&!localStorage.getItem('octopi-intro-seen')&&!localStorage.getItem('octopi-account-v1')&&!params.has('workspace')&&!params.has('agent')){location.replace('welcome.html');return;}}catch{}
- const pages=[['Home','index.html'],['Garden','garden.html'],['Projects','projects.html'],['Mold an Agent','workshop.html'],['About','about.html']];
+ const pages=[['Home','index.html'],['Garden','garden.html'],['Projects','projects.html'],['Studio Pods','studios.html'],['Mold an Agent','workshop.html'],['About','about.html']];
  const nav=document.createElement('nav');nav.className='site-navigation';nav.setAttribute('aria-label','Main navigation');
  const brand=document.createElement('a');brand.href='index.html';brand.className='site-brand';brand.textContent='Octopi AI';nav.append(brand);
  const menu=document.createElement('details');menu.className='site-menu';const summary=document.createElement('summary');summary.textContent='Explore';menu.append(summary);const links=document.createElement('div');links.className='site-links';
